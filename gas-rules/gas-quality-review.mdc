@@ -1,0 +1,156 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Google Apps Script（GAS）品質チェック・自動レビュー ルール仕様
+
+**使い方**
+- 「テストをして」「テストして」……リポジトリ全体の.gs/.jsファイルが対象
+- 「◯◯のGASをテストして」または「◯◯をテストして」……指定ディレクトリ配下のみ対象
+- 主要ディレクトリ（例: src, apps/util等）はtrigger_phrases/filesに列挙、パターン追加可能
+
+---
+
+## 補足：Dify/APIエラー・トリガー自動停止の運用
+
+- **Difyに関連するコードが検出された場合のみ**、Dify特別対策を適用します。
+- DifyやAPI(429/504)の同一エラーが**3回連続発生**した場合、該当トリガー（自動バッチや定期実行）は**自動削除や一時停止**されなければなりません。
+- Difyは**日次300回以内のリクエスト上限**、504/429は「同日・同一対象で3回超」なら自動停止＋手動対応への明示的切替が必須です。
+- **重大警告は画面アラート（UI表示）ベースで対応**し、エラー送信ではなく視覚的な警告表示を想定します。
+- **連続失敗のエラーハンドリングは、一連の処理内のどこかで実装されていれば良い**とし、特定の場所でなくても可とします。
+- **トリガーが設定されている関数がある場合のみ**、トリガー関連チェックを実施します。
+- **GASファイルは.gs形式および.js形式両方を対象**とします。
+
+---
+
+```yaml
+rules:
+  - name: GAS品質チェック（リポジトリ全体）
+    files:
+      - "**/*.gs"
+      - "**/*.js"
+    trigger_phrases:
+      - "テストをして"
+      - "テストして"
+      - "GASのテストして"
+    description: |
+      以下を重点チェックします（.gs/.js両対応）：
+      ・Difyコードが検出された場合のみ、Dify特別対策（429/504エラー時の自動トリガー削除/一時停止、日次300回上限）を適用
+      ・重大警告は画面アラート（UI）ベースでの表示を想定
+      ・連続失敗エラーハンドリングは処理内のどこかで実装されていれば良い（場所は問わない）
+      ・トリガーが設定されている関数がある場合のみ、トリガー制御チェックを実施
+    actions:
+      - type: pattern_check
+        description: |
+          .gs/.js両ファイルでDifyコード検出時のみDify/APIエラー対策チェック。トリガー自動削除/停止・人手移行がなければUI警告。
+          リクエスト回数や再試行制御の無い設計も問題視。
+      - type: threshold_check
+        description: |
+          Difyコード有時：Difyリクエスト300回/日まで、504/429は同じ種類で3回連続時に自動停止・手動対応必須。
+          トリガー設定有時のみトリガー制御チェック。超過・未設定は画面アラート警告。
+      - type: manual_action_check
+        description: |
+          連続エラー時のハンドリングが処理内のどこかで実装されているかチェック（場所は問わない）。
+          トリガー設定有時のみトリガー施策チェック。
+
+  - name: GAS品質チェック（ディレクトリ指定）
+    trigger_phrases:
+      - "srcのGASをテストして"
+      - "apps/utilのGASをテストして"
+      - "srcをテストして"
+      - "srcをテストして"
+      - "apps/utilをテストして"
+      - "apps/utilテストして"
+      - "{ディレクトリ}のGASをテストして"
+      - "{ディレクトリ}をテストして"
+      - "{ディレクトリ}テストして"
+    files:
+      - "src/**/*.gs"
+      - "src/**/*.js"
+      - "apps/util/**/*.gs"
+      - "apps/util/**/*.js"
+      # - "{ディレクトリ}/**/*.gs"
+      # - "{ディレクトリ}/**/*.js"
+    description: |
+      ディレクトリ単位でも以下を適用（.gs/.js両対応）：
+      ・Difyコード検出時のみDify/API連続エラー対策適用（日次300回上限・同種類エラー3連続での自動停止）
+      ・重大警告は画面UI表示ベース
+      ・連続失敗ハンドリングは処理内どこかで実装されていれば可
+      ・トリガー設定有時のみトリガー制御チェック
+    actions:
+      - type: pattern_check
+        description: |
+          .gs/.js両ファイルでDifyコード有時のみDify/APIエラー時のトリガー停止・削除ロジックチェック。
+          処理内でのエラーハンドリング有無確認（場所不問）。
+      - type: threshold_check
+        description: |
+          Difyコード有時：300回/日・504/429は同一エラー3回で必ず自動停止または人力要求。
+          トリガー有時のみトリガー制御確認。超過・未設定は画面UI警告。
+      - type: manual_action_check
+        description: |
+          連続APIエラー・Dify障害時のハンドリングが処理フロー内で実装されているかチェック。
+          トリガー有時のみ人力介入・管理者通知切替確認。
+
+report_template: |
+  🚨 GAS品質チェックレポート（.gs/.js対応）
+
+  {{#if loopIssues.length}}
+  ⚠️ ループ・再帰回数リスク
+  {{#each loopIssues}}
+    - {{this}}
+  {{/each}}
+  {{/if}}
+
+  {{#if retryIssues.length}}
+  ⚠️ リトライ・失敗回数リスク
+  {{#each retryIssues}}
+    - {{this}}
+  {{/each}}
+  {{/if}}
+
+  {{#if errorIssues.length}}
+  ⚠️ エラー許容回数リスク
+  {{#each errorIssues}}
+    - {{this}}
+  {{/each}}
+  {{/if}}
+
+  {{#if apiErrorIssues.length}}
+  ⚠️ APIエラー（504/429/Dify等）制御リスク
+  {{#each apiErrorIssues}}
+    - {{this}}
+  {{/each}}
+  {{/if}}
+
+  {{#if difyLimitIssues.length}}
+  ⚠️ Difyリクエスト特別上限リスク（Difyコード検出時のみ）
+  {{#each difyLimitIssues}}
+    - {{this}}
+  {{/each}}
+  {{/if}}
+
+  {{#if triggerStopIssues.length}}
+  ⚠️ トリガー停止/削除制御なしリスク（トリガー設定有時のみ）
+  {{#each triggerStopIssues}}
+    - {{this}}
+  {{/each}}
+  {{/if}}
+
+  {{#if lengthIssues.length}}
+  ⚠️ 入力文字列長・context長リスク
+  {{#each lengthIssues}}
+    - {{this}}
+  {{/each}}
+  {{/if}}
+
+  {{#if manualIssues.length}}
+  ⚠️ 有人対応/通知なし（運用リスク）
+  {{#each manualIssues}}
+    - {{this}}
+  {{/each}}
+  {{/if}}
+
+  {{#unless loopIssues.length}}{{#unless retryIssues.length}}{{#unless errorIssues.length}}{{#unless apiErrorIssues.length}}{{#unless difyLimitIssues.length}}{{#unless triggerStopIssues.length}}{{#unless lengthIssues.length}}{{#unless manualIssues.length}}
+  ✅ 重大なリスクや過剰な設定は検出されませんでした。
+  {{/unless}}{{/unless}}{{/unless}}{{/unless}}{{/unless}}{{/unless}}{{/unless}}{{/unless}}

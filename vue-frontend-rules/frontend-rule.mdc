@@ -1,0 +1,67 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Frontend Rules
+
+## Code Readability and Understanding
+
+1. Ensure that variable names, function names, and component names accurately reflect their roles (e.g., singular/plural, use of gerunds).
+2. Avoid redundancy in naming and processing.
+3. Use intuitive naming conventions (e.g., is~ or has~ for Boolean values, ~s for plurals).
+4. Avoid using only generic names such as item, value, data; instead, opt for descriptive naming.
+5. Do not use magic numbers or strings directly; define them as constants (e.g., numbers like 100, strings like 'hoge', arguments like (a, b)).
+
+## Coding Style and Formatting
+
+1. Follow the team's coding style (e.g., ESLint, Prettier).
+2. Ensure that indentation, spacing, and line-break styles are consistent with the current project's implementation.
+3. Ensure that language files for both Japanese (ja) and English (en) are created and edited.
+4. Ensure that unnecessary console.log statements, meaningless blank lines, and debug code have not been left in the code.
+5. Verify the absence of spelling mistakes (typos). Utilize auto-completion and spell-check tools.
+
+## Vue Component
+
+1. Component names should use UpperCamelCase.
+2. Ensure that components are placed according to their design.
+
+## Vue Template
+
+1. Use icon components for SVG icons and image images.
+2. Prioritize using echoes UI components.
+3. Prefer v-if over v-show.
+4. Use shorthand notation for v-bind as : and v-on as @.
+5. Omit default-set attributes.
+6. Use empty tags if no value is contained within tags.
+
+## Vue Script
+
+1. Use the Composition API for new items.
+2. When using the Composition API, ensure to defineComponent.
+3. Follow the import order: libraries, constants/functions, components.
+4. Follow the order within the setup function:
+   - Constants
+   - Variables
+   - Computed properties
+   - Watchers (watch/watchEffect)
+   - Lifecycle hooks (such as onMounted, onUnmounted)
+   - Method definitions
+   - Return statement
+5. Omit the name option where possible.
+6. Set types and default or required for props.
+7. If there are multiple instances of code assigning values from props to local variables, please use watchEffect to consolidate them.
+8. Use camelCase for variable and function names.
+9. Do not insert blank lines between option objects.
+10. Ensure appropriate use of ref, computed, watch, etc.
+11. Please prioritize using ref over reactive.
+12. Use lifecycle hooks (onMounted, onUnmounted) correctly.
+13. Set up error handling for functions.
+
+## Vue CSS
+
+1. Use scss as the lang unless there's a special reason not to.
+2. Use scoped styles unless there's a special reason not to, restricting them to the current component.
+3. Use kebab-case for class names.
+4. Utilize nesting and the BEM (Block Element Modifier) methodology for class naming.
+5. Utilize variables for typography and color settings.
