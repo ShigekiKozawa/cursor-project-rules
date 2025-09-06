@@ -1,0 +1,108 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+⚠️ Please apply these rules only for web production purposes such as HTML coding. Absolutely do not apply them for program development or other purposes.
+
+# CSS Coding Rules
+
+---
+
+## SCSS Writing Rules
+
+- When writing SCSS, always condense blank lines.
+- Variables ($), mixins, and functions must be consolidated and managed in `_mixins.scss` (do not split into separate files; integrate them).
+- For responsive control, use `@mixin media($media)` or `@mixin responsive($property, $values...)`.
+- For unit conversion and responsive settings, please use functions like `calcSp`, `calcPc`, and `responsiveValue`.
+- Define selector names entirely in **lowercase kebab-case** (hyphens between words). Underscores and camelCase are prohibited.
+- SCSS selectors, states, elements, and modifiers must be written **only using chain notation** (`&-element`, `&--modifier`, `&.state`).
+  - Example: `.block { &-element { ... } &-wrapper { ... } &.state { ... } }`
+- Always nest element hierarchies under the parent class name and use SCSS chains for consistent styling.
+- Write child elements and pseudo-element specifications (e.g., `span { ... }` or `&::before, &::after`) within the parent selector using chains.
+- Minimize blank lines and write compactly to prevent file bloat.
+- Centrally manage common reset styles in `_reset.scss`.
+- **All new styles, layouts, component additions, or modifications must be made within `_layout.scss`. Direct additions to other files are prohibited.**
+
+---
+
+## SCSS Compilation Method & Operational Rules
+
+- Manage SCSS (Sass) in the `sass/` directory and compile it to the `css/` directory.
+- Compilation command (execute in the `sass` directory):
+  `sass --watch ../sass:../css --style=compact --no-cache --sourcemap=none`
+- Do not create any `.map` (sourcemap) files in the `css/` directory.
+
+---
+
+## CSS Performance Improvement Rules
+
+- As a principle, use class selectors (kebab-case & chain notation) and avoid complex nesting or redundant descendant selectors.
+- Tag selectors, ID selectors, and long descendant selectors are prohibited.
+- Always remove duplicate declarations and unused selectors to suppress CSS bloat.
+- Manage common and reusable properties with mixins or functions, and thoroughly adhere to the DRY (Don't Repeat Yourself) principle.
+- For animation and transition specifications, prioritize hardware-accelerated properties like `transform` and `opacity`.
+- Where possible, use shorthand and logical properties to reduce code volume and rendering costs.
+- Group media queries in one place to avoid scattered or duplicate specifications.
+- Also utilize new CSS features like `:where` and `:is` (be mindful of browser support).
+
+---
+
+## SCSS Mixin & Function Rules
+
+### Breakpoint Management
+
+#### `media` Mixin
+- Use `@mixin media($media)` to switch styles for each breakpoint. (Main breakpoints: `pc` -> `min-width: 768px`, `sp` -> `max-width: 767px`)
+- Implementation example (description):
+  - Write PC styles using `@include media(pc) { ... }`
+  - Write smartphone styles using `@include media(sp) { ... }`
+
+### Unit Conversion & Responsive Values
+
+#### `calcSp` Function
+- `@function calcSp($value)`: Calculates responsive sizes for smartphones.
+
+#### `calcPc` Function
+- `@function calcPc($value)`: Calculates responsive sizes for PCs.
+
+### Bulk Responsive Property Specification
+
+#### `responsive` Mixin
+- `@mixin responsive($property, $values...)`: Specifies SP/PC values in bulk for a property.
+- Example: `@include responsive(margin, 20 10);` automatically outputs values for both SP (smartphone) and PC.
+
+---
+
+### Summary
+
+- All variables, mixins, and functions are centralized in `sass/_mixins.scss`.
+- Breakpoints are centrally managed with `@mixin media`.
+- Size specifications are made responsive using `calcSp`, `calcPc`, and `responsiveValue` functions.
+- `@mixin responsive` allows bulk specification of both SP and PC values per property.
+
+---
+
+## SCSS Structure Sample (Recommended File Structure)
+
+sass/
+├── base.scss      // Main file that consolidates everything. Imports/uses partials.
+├── _reset.scss    // Reset CSS
+├── _layout.scss   // All new implementations and modifications must be written here.
+├── _mixins.scss   // All variables, mixins, and functions are centrally managed here.
+---
+
+## Quality Checklist
+
+- Are all selector names, states, and modifiers written in kebab-case + chain notation?
+- Is hierarchical nesting consistent with parent class + chain notation?
+- Are all new styles, additions, and modifications made within `_layout.scss`?
+- Are variables, mixins, and functions centralized in `_mixins.scss`?
+- Are common reset styles centrally managed in `_reset.scss`?
+- Are there any unnecessary CSS properties or unused selectors remaining?
+- Are media queries and responsive specifications grouped together?
+- Are no `.map` files created in the `css/` directory?
+
+---
+
+In HTML coding and web production, manage styles using kebab-case + chain notation & consistent parent-child nesting, and thoroughly ensure maintainability and performance optimization.

@@ -1,0 +1,171 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+⚠️ Please apply these rules only for web production purposes such as HTML coding. Absolutely do not apply them for program development or other purposes.
+
+# HTML Coding Rules
+
+---
+
+## Basic Policy
+
+- **Emphasis on Readability**: Write structured HTML that is easy for anyone to understand.
+- **Maintainability**: Strive to write code that is easy to modify and update.
+- **SEO Optimization**: Thoroughly implement appropriate meta tags and a semantic structure.
+- **Responsive Support**: Implement with consideration for both PC and smartphone compatibility.
+
+---
+
+## Code Writing Rules
+
+### Indentation & Formatting
+
+- Always use 2 spaces for indentation.
+- Use appropriate line breaks between opening and closing tags to clearly show nested structures.
+- If a tag has many attributes, place each attribute on a new line and align them.
+
+---
+
+### Class Naming Convention (BEM-based + Recommended Naming Words + Scaled Structure)
+
+#### General Principles
+
+- Class names must always be written in **kebab-case** (words connected by hyphens).
+- **Abbreviations and single-letter shorthands are prohibited in principle.** Appropriately select and combine words from the recommended naming list that clearly indicate function and meaning.
+- Strictly adhere to BEM principles, naming according to scale: "Block (large: component/module unit)," "Element (medium: constituent element within a Block)," and "Modifier/State (small: state/variation)."
+- The structure and naming rules for each scale are as follows.
+
+#### Block (Large: Component/Module Unit)
+
+- Use nouns primarily listed in the "Block/Module" table for Block class names.
+- Examples: `.section`, `.content`, `.article`, `.banner`, `.about`, `.slider`, `.accordion`, `.footer`, `.wrapper`, `.container`, `.timeline`, `.faq`
+- Code Examples:
+  - `<div class="about">...</div>`
+  - `<section class="banner">...</section>`
+  - `<section class="faq">...</section>`
+  - `<footer class="footer">...</footer>`
+
+#### Element (Medium: Elements/UI Parts within a Block)
+
+- Name Elements by combining the Block name + hyphen + "Element name/or UI-related or other names (from recommended list)."
+- Examples: `.about-title`, `.about-image`, `.about-cont`, `.slider-card`, `.slider-title`, `.faq-accordion-title`, `.footer-list`, `.footer-logo`
+- Code Examples:
+  - `<h2 class="about-title">About the Product</h2>`
+  - `<div class="slider-card">...</div>`
+  - `<li class="footer-list-item">...</li>`
+  - `<div class="faq-accordion-title">Q&A Item</div>`
+
+#### Modifier/State (Small: State/Variation)
+
+- Name Modifiers/States using "Block name-Element name-adjective/state" to express states, variations, or decorations.
+  - Use adjectives/state names from the recommended list (e.g., `active`, `current`, `open`, `close`, `primary`, `secondary`, etc.).
+  - ※ The same structure applies when dynamically added with JavaScript.
+- Examples: `.about-title-primary`, `.toggle-wrap-open`, `.accordion-item-active`, `.footer-list-item-current`
+- Code Examples:
+  - `<div class="toggle-wrap toggle-wrap-open">...</div>`
+  - `<li class="footer-list-item footer-list-item-current">...</li>`
+  - `<div class="faq-accordion-title faq-accordion-title-active">...</div>`
+
+---
+
+#### Class Naming Convention Summary
+
+- **Block**: Uses nouns listed in Block/Module. Containers for pages or large functional units.
+  Examples: `about`, `slider`, `faq`, `footer`, `guideline`, `main`, `header`
+- **Element**: Block name + hyphen + UI part name or element (recommended: Element/or UI-related/other names).
+  Examples: `about-title`, `slider-card`, `faq-accordion-title`, `guideline-inner`, `footer-logo`
+- **Modifier/State**: Block name-Element name-(or Block name-) + adjective or state name (e.g., adjectives/states from the recommended list).
+  Examples: `about-title-primary`, `slider-card-active`, `footer-logo-small`
+
+---
+
+#### Recommended Naming Words (Classification Examples - Partial Excerpt)
+
+- **Block/Module**: `section`, `content`, `article`, `post`, `top`, `home`, `sidebar`, `wrapper`, `wrap`, `container`, `group`, `area`, `emphasis`, `catch`, `description`, `introduction`, `announce`, `information`, `action`, `more`, `feature`, `detail`, `summary`, `banner`, `hero`, `carousel`, `slider`, `cards`, `accordion`, `timeline`, `dialog`, `toast`, `table`, `guideline`, `footer`, `about`, `usage`, `concept`, `faq`, `ugc`, `main`, `header`, `menu`
+- **Element/UI/Other**: `inner`, `outer`, `body`, `head`, `foot`, `heading`, `title`, `lead`, `list`, `menu`, `item`, `unit`, `column`, `text`, `caption`, `thumbnail`, `avatar`, `feature`, `tel`, `address`, `date`, `time`, `category`, `tag`, `next`, `prev`, `mask`, `overlay`, `separator`, `divider`, `button`, `image`, `icon`, `loading`, `logo`, `tab`, `card`, `accordion`
+- **Modifier/State Adjectives**: `main`, `primary`, `secondary`, `tertiary`, `quaternary`, `common`, `global`, `local`, `general`, `brand`, `site`, `related`, `success`, `alert`, `error`, `warning`, `info`, `tiny`, `small`, `medium`, `large`, `huge`, `xl`, `xs`, `current`, `active`, `disabled`, `show`, `hide`, `open`, `close`, `left`, `center`, `right`, `top`, `bottom`, `round`, `circle`, `reverse`
+
+---
+
+### Actual Examples (Usage Classification)
+
+- Block: `<section class="about">`, `<section class="faq">`
+- Element: `<h2 class="about-title">`, `<div class="faq-accordion-title">`
+- Modifier/State: `<div class="faq-accordion-title faq-accordion-title-active">`, `<div class="toggle-wrap toggle-wrap-open">`
+
+---
+
+### Supplementary Notes
+
+- Use the full concatenation of Block-Element-Modifier for state and decoration classes to clearly define the structure according to scale and purpose.
+- Naming for script control classes (e.g., `.js-slider-tab-button`) should also clearly indicate state or role and can be combined as needed.
+
+---
+
+## Section Structure & Comments
+
+- When delimiting sections, insert comments: `<!-- .sectionName -->` at the beginning and `<!-- /.sectionName -->` at the end.
+- Use comments and indent nested sections appropriately.
+
+**Comment Writing Example (Description):**
+- Place the comment `<!-- .header -->` immediately before the `header` element and `<!-- /.header -->` immediately after.
+- Similarly, when nesting sections, write corresponding comments for each start and end.
+
+---
+
+## Image Tag Rules
+
+Image tags (`<img>`) must always include the following four attributes:
+
+1.  **width**: Image width (pixel specification; for preventing layout shifts and optimizing rendering).
+2.  **height**: Image height (pixel specification; for maintaining layout and reserving space).
+3.  **loading**: Explicitly state loading timing (`lazy` or `eager`).
+4.  **alt**: Alternative text (empty string for decorative images).
+
+**Provide descriptive text for regular images, and leave the `alt` attribute empty for decorative images.**
+
+---
+
+## Responsive Support Classes
+
+- `.pc`: Class to display elements only on PC view.
+- `.sp`: Class to display elements only on smartphone view.
+
+Utilize these for switching images, text, and layouts.
+
+---
+
+## Meta Tags & OGP Settings
+
+- Always set the following meta tags: `charset`, `viewport`, `title`, `description`, `keywords`.
+- Also set a full set of Open Graph Protocol (OGP) tags and Twitter Card-related meta tags.
+- Always include favicons, other web icons, and CSS links within the `<head>`.
+
+---
+
+## Semantic HTML Structure
+
+- Use HTML5 semantic elements like `header`, `main`, `section`, `footer` appropriately.
+- When nesting sections within sections, describe them in a logical hierarchy and make it understandable with comments.
+- Use heading tags `<h1>` to `<h6>` in the correct hierarchy according to the page structure.
+
+---
+
+## Quality Checklist
+
+- Is all indentation consistently 2 spaces?
+- Are all class names in kebab-case and assigned without abbreviations from the recommended naming words?
+- Is the class design BEM-based, corresponding to the scale and meaning of Block/Element/Modifier?
+- Are all section comments written appropriately?
+- Are "width," "height," "loading," and "alt" attributes set for all images?
+- Are `.pc`/`.sp` classes used appropriately according to their purpose?
+- Are all meta tags and OGP tags comprehensively included?
+- Is the HTML structure semantic?
+- Is the heading tag hierarchy logical and consistent?
+- Do path descriptions comply with directory structure rules?
+
+### Remarks
+
+In HTML coding, strictly adhere to directory structure rules and thoroughly implement understandable markup with consideration for maintainability and SEO.

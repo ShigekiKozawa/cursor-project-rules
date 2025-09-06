@@ -1,0 +1,107 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+⚠️ Please apply these rules only for web production purposes such as HTML coding. Absolutely do not apply them for program development or other purposes.
+
+# Directory Structure and File Naming Rules
+
+---
+
+## `project/` Directory
+
+- This is the root directory for storing all website-related files.
+- Place only `index.html` directly under this directory.
+- Only the creation of `css/`, `sass/`, `js/`, and `img/` subdirectories is permitted.
+
+---
+
+## `css/` Directory
+
+- Store only compiled CSS files (e.g., `base.css`).
+- `base.css` is mandatory and manages all styles collectively.
+- Manual editing of CSS files is prohibited; they must always be auto-generated from Sass.
+
+---
+
+## `sass/` Directory
+
+- Store Sass (SCSS) source files.
+- Main file: `base.scss` (consolidates other files using `@import` or `@use`).
+- Partials (starting with `_`): e.g., `_layout.scss`, `_mixins.scss`, `_reset.scss` (all are mandatory).
+
+---
+
+## `js/` Directory
+
+- Store all JavaScript files.
+- Custom-written files should be in kebab-case (e.g., `util.js`).
+- Place external plugins, etc., with their original filenames (e.g., `jquery.min.js`, `waypoints.min.js`).
+
+---
+
+## `img/` Directory
+
+- Store images used on the website.
+- Place PC-specific images in `img/pc/`.
+- Place smartphone-specific images and common images directly under `img/`.
+- Name files or directories so their purpose is clear (e.g., `hero_image_sp.jpg`, `logo.png`).
+
+---
+
+## File Naming Rules
+
+- **HTML Files**: Lowercase English letters and underscores. Example: `index.html` (place directly under `project/`).
+- **CSS Files**: Lowercase English letters, kebab-case. Example: `base.css` (place within `css/`).
+- **Sass Files**: `base.scss` (main), partials like `_layout.scss`, `_mixins.scss`, `_reset.scss` (place within `sass/`).
+- **JavaScript Files**: Custom-written in lowercase kebab-case, plugins use their original filenames (place within `js/`).
+- **Image Files**: Lowercase English letters and underscores. Examples: `hero_image_sp.jpg`, `logo.png`, `button_icon.png`. PC-specific in `img/pc/`, smartphone-specific and common images directly under `img/`.
+
+---
+
+## File Placement Best Practices
+
+Directory Map Example:
+
+/
+├── project/
+│   ├── index.html
+│   ├── css/
+│   │   └── base.css
+│   ├── sass/
+│   │   ├── base.scss
+│   │   ├── _layout.scss
+│   │   ├── _mixins.scss
+│   │   └── _reset.scss
+│   ├── js/
+│   │   ├── util.js
+│   │   ├── jquery.min.js
+│   │   └── waypoints.min.js
+│   └── img/
+│       ├── pc/
+│       │   ├── hero_image_pc.jpg
+│       │   └── logo_pc.png
+│       ├── hero_image_sp.jpg
+│       ├── logo.png
+│       └── button_icon.png
+---
+
+## HTML File Structure Example
+
+```html
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Site Title</title>
+  <link rel="stylesheet" href="css/base.css">
+</head>
+<body>
+  <!-- Content -->
+  <script src="js/jquery.min.js"></script>
+  <script src="js/waypoints.min.js"></script>
+  <script src="js/util.js"></script>
+</body>
+</html>

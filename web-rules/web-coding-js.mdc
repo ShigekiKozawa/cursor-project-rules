@@ -1,0 +1,68 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+⚠️ Please apply these rules only for website and HTML coding purposes. Absolutely do not apply them for other purposes such as framework development or server-side development.
+
+# JavaScript Coding Rules
+
+---
+
+## Basic Policy
+
+- **Emphasis on Safety and Maintainability**: Thoroughly implement predictable and maintainable code that prevents global scope pollution.
+- **Quality and Readability**: Write code with a focus on readability, error reduction, and reusability.
+
+---
+
+## Code Writing Rules
+
+### Scope Control / Function Design
+
+- Wrap JavaScript source code in an **Immediately Invoked Function Expression (IIFE)** to minimize impact on the global scope.
+  ```js
+  (() => {
+    // Code body
+  })();
+
+Always divide functions and processes by purpose and responsibility, managing them in single-function, small units.
+Register event listeners appropriately after the DOM is ready (e.g., DOMContentLoaded, load event) or at the necessary timing, and also consider cleanup processes and the implementation of removeEventListener.
+Actively use Promise/async/await syntax as needed to avoid callback hell and deep nesting structures.
+Variable, Constant, and Function Names
+Always use camelCase for variable and function names.
+Example: mainVisualSlider, getCurrentPosition, openMenuButton
+Name constant values (non-reassignable items, configuration information, magic numbers, etc.) using all uppercase letters with underscores (e.g., SLIDER_SPEED, API_URL).
+Avoid abbreviations or meaningless shorthand in naming; use names that clearly indicate the function, meaning, and purpose.
+Syntax / Modern JS
+Primarily use ES6+ syntax (const/let, arrow functions, destructuring assignment, template literals, etc.).
+Variable declaration using var is prohibited.
+Effectively utilize higher-order functions such as forEach, map, filter, reduce, some, and every, minimizing iterative processing with for loops.
+Actively use template literals (`...${variable}`).
+Documentation / Comments
+Write clear comments for complex processes or algorithms, specifying why the process is necessary.
+It is recommended to include JSDoc comments for arguments, return values, and purpose (overview) in function declarations.
+/**
+ * Switches the main visual
+ * @param {number} current - Current slide number
+ * @return {void}
+ */
+const switchMainVisual = (current) => { /* ... */ };
+
+
+File Management / Quality Assurance
+If a single file or IIFE exceeds several hundred lines, divide and manage files by purpose (e.g., main.js, slider.js, menu.js).
+Frequently delete unnecessary code (unused variables, functions) and always keep it up to date.
+Remove all debug code like console.log statements before deploying to production, after confirming functionality.
+Use try-catch blocks and existence checks appropriately to ensure processes can proceed safely even when errors occur.
+Strive to write code that is understandable to others and your future self.
+Quality Checklist
+Are variable and function names consistently camelCase (constants in uppercase + underscore)?
+Is the design divided into common functions, event listeners, and processing units?
+Is the global scope unpolluted (IIFE implemented, direct attachment to window prohibited)?
+Is the code written using ES6+ syntax (const/let, arrow functions, etc.)?
+Are nested structures and callback hell avoided, and is Promise/async implemented where appropriate?
+Are there JSDoc or comments for complex processes?
+Is there any unnecessary code, console.log, etc., remaining?
+Is event monitoring and resource release appropriate (proper management of addEventListener/removeEventListener)?
+In JS coding, prioritize "Maintainability, Safety, and Readability," and always strive for an implementation that is understandable and safe for anyone to read.
